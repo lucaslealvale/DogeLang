@@ -80,7 +80,7 @@ class Tokenizer:
         self.position+=1
         self.actual = nextToken
 
-    elif(self.origin[self.position] == "!"):
+    elif(self.origin[self.position] == "dont"):
         nextToken = Token("!", None)
         self.position+=1
         self.actual = nextToken
@@ -142,19 +142,19 @@ class Tokenizer:
             nextToken = Token("READ", None)
             self.actual = nextToken
 
-        elif variavel == "println":
+        elif variavel == "wow":
             nextToken = Token("PRINT", None)
             self.actual = nextToken
         
-        elif variavel == "while":
+        elif variavel == "rool":
             nextToken = Token("WHILE", None)
             self.actual = nextToken
 
-        elif variavel == "if":
+        elif variavel == "very IF":
             nextToken = Token("IF", None)
             self.actual = nextToken
 
-        elif variavel == "else":
+        elif variavel == "such ELSE":
             nextToken = Token("ELSE", None)
             self.actual = nextToken
 
@@ -170,11 +170,11 @@ class Tokenizer:
             nextToken = Token("BOOL", "bool")
             self.actual = nextToken
 
-        elif variavel == "true":
+        elif variavel == "VERYTRUE":
             nextToken = Token("BOOLV", "true")
             self.actual = nextToken
         
-        elif variavel == "false":
+        elif variavel == "SUCHFALSE":
             nextToken = Token("BOOLV", "false")
             self.actual = nextToken
 

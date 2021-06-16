@@ -58,8 +58,105 @@ $ python3 DOGELANG.py seuArquivo.c
 Este projeto possui um arquivo de exemplo que pode ser rodado com o seguinte commando no terminal, dado que este git fora clonado em algum diretório local:  
 ```
  $ python3 DOGELANG.py example.c
+```  
+Seguem outros exemplos possiveis:  
+```
+/*code com loop e condicionais*/
+int main()
+{
+    int a;
+    int b;
+    a = 0;
+    b = 1;
+    rool ((a < 99999) && (b ==1)){
+        a = a +1;
+        wow(a);
+        veryIf(a == 5){
+            b = 0;
+            wow("long live DOGE");
+
+        }suchElse veryIf(a==4)
+        {
+            wow("Obrigado por usar DogeLang");
+        }
+    }
+    wow(a);
+}
 ```
   
+```
+/*Funções aninhadas*/
+
+int soma(int x, int y)
+{
+    int res;
+    res = x + y;
+    return res;    
+}
+
+bool comparaSoma()
+{
+    bool res;
+    int x;
+    x = 3;
+    
+    res = soma(x,2) == 8;
+    
+    return res;
+}
+
+
+int main()
+{
+    int x;
+    bool z;
+    
+    z = comparaSoma();
+    x = z;
+    wow(x);
+    
+}
+
+```
+  
+```
+/*True e False*/
+int main()
+{
+    bool x;
+    x = VERYTRUE;
+    bool y;
+    y = SUCHFALSE;
+    veryIf ( x || y){
+        wow(1);
+    }
+    suchElse{
+        wow(0);
+    }
+}
+```  
+```
+/* Recursão*/
+
+int serie(int x)
+{
+    veryIf (x == 1) {
+        return x;
+    }suchElse{
+    	return x + serie(x-1);
+    }
+    
+}
+
+int main()
+{
+    int x;
+    x = 5;
+    wow(serie(x));
+    
+}
+
+```  
 ### Diagrama Sintático:  
   
 ![diagrama](/diagrams/block.PNG)  

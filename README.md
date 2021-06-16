@@ -7,7 +7,7 @@ Atividade Prática Supervisionada da matéria Lógica da Computação
  Essa postura somada à uma porção de palavras escritas em fonte comic sans com gráfia duvidosa (escrita informal da língua Inglesa), foi a receita de sucesso para o nascimento do maior meme de cachorro da história.  
  A partir dessa imagem muitas variações e montagens foram criadas e hoje existem acervos enormes na internet do doge.  
  O meme ficou tão grande que ele se expandiu e criaram uma criptomoeda só dele a Dogecoin, moeda que explodiu em crescimento em 2021. Devido à popularidade do mesmo na internet e à grandes personalidades a impulsionando tal como Elon Musk.  
- Então como forma de agradecimento e de passar a palavra de Doge este projeto tomou forma, para quem conhece as falas atribuidas ao cachorro nas charge, algumas delas viraram a sintaxe desta linguagem de programação simples.  
+ Então como forma de agradecimento e de passar a palavra de Doge este projeto tomou forma, para quem conhece as falas atribuídas ao cachorro nas charges, algumas delas viraram a sintaxe desta linguagem de programação simples.  
   
 ### Compilador  
  O compilador desta linguagem é feito em python, e ele funciona testadamente em linux por usar caracteristicas do Bash que variam entre sistemas operacionais. As bibliotecas do python útilizadas foram sys, re, ABC e abstractmethod. A primeira como mencionado para ter os recursos do bash para receber o programa a ser compilado, a re é o famoso regex, utilizado para filtrar o programa de entrada e remover comentários prévios à compilação.  

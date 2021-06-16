@@ -1,6 +1,6 @@
 # DOGELANG
 Atividade Prática Supervisionada da matéria Lógica da Computação
-![diagrama](/diagrams/dogeLogo.jpg=250x250)  
+![diagrama](/diagrams/dogeLogo.jpg =250x250)  
 Motivação
 
 EBNF para este projeto:  

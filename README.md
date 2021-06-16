@@ -1,5 +1,7 @@
-# APS-LinguagemComputacao DOGELANG
-Atividade Pratica Supervisionada da matéria Linguagem de Programação
+# DOGELANG
+Atividade Prática Supervisionada da matéria Lógica da Computação
+![diagrama](/diagrams/dogeLogo.jpg)  
+Motivação
 
 EBNF para este projeto:  
 FUNCDEFBLOCK = ( λ | {TYPEFunc});  

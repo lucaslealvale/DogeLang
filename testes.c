@@ -28,7 +28,7 @@ int main()
     z = comparaSoma();
     x = z;
     wow(x);
-    
+
     int a;
     int b;
     a = 0;
@@ -40,6 +40,9 @@ int main()
         wow(a);
         veryIf(a == 5){
             b = 0;
+        }suchElse veryIf(a==4)
+        {
+            wow("funciona elif");
         }
     }
     veryIf(dont c){

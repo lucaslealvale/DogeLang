@@ -59,7 +59,7 @@ Este projeto possui um arquivo de exemplo que pode ser rodado com o seguinte com
 ```
  $ python3 DOGELANG.py example.c
 ```  
-Seguem outros exemplos possiveis:  
+Seguem outros exemplos possiveis (a extensão deve ser .c):  
 ```
 /*code com loop e condicionais*/
 int main()

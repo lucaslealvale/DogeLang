@@ -70,6 +70,11 @@ class Tokenizer:
         self.position+=1
         self.actual = nextToken
     
+    elif(self.origin[self.position] == ","):
+        nextToken = Token(",", None)
+        self.position+=1
+        self.actual = nextToken
+
     elif(self.origin[self.position] == "=" and self.origin[self.position + 1] == "=" ): 
         nextToken = Token("==", None)
         self.position+=2
@@ -77,11 +82,6 @@ class Tokenizer:
     
     elif(self.origin[self.position] == "="):
         nextToken = Token("=", None)
-        self.position+=1
-        self.actual = nextToken
-
-    elif(self.origin[self.position] == "dont"):
-        nextToken = Token("!", None)
         self.position+=1
         self.actual = nextToken
     
@@ -121,7 +121,7 @@ class Tokenizer:
         string=''    
         
         while(self.origin[self.position] != '"'):
-            # print(string)
+            
             string += self.origin[self.position]
     
             self.position+=1
@@ -138,7 +138,7 @@ class Tokenizer:
     
             self.position+=1
         
-        if variavel == "readln":
+        if variavel == "listen":
             nextToken = Token("READ", None)
             self.actual = nextToken
 
@@ -146,28 +146,36 @@ class Tokenizer:
             nextToken = Token("PRINT", None)
             self.actual = nextToken
         
+        elif variavel == "dont":
+            nextToken = Token("!", None)
+            self.actual = nextToken
+    
+        elif variavel == "return":
+            nextToken = Token("RETURN", None)
+            self.actual = nextToken
+        
         elif variavel == "rool":
             nextToken = Token("WHILE", None)
             self.actual = nextToken
 
-        elif variavel == "very IF":
+        elif variavel == "veryIf":
             nextToken = Token("IF", None)
             self.actual = nextToken
 
-        elif variavel == "such ELSE":
+        elif variavel == "suchElse":
             nextToken = Token("ELSE", None)
             self.actual = nextToken
 
         elif variavel == "int":
-            nextToken = Token("INTV", None)
+            nextToken = Token("INTV", None) # ESSE
             self.actual = nextToken
 
         elif variavel == "string":
-            nextToken = Token("STRING", "string")
+            nextToken = Token("STRING", "string") # ESSE
             self.actual = nextToken
 
         elif variavel == "bool":
-            nextToken = Token("BOOL", "bool")
+            nextToken = Token("BOOL", "bool") #ESSE
             self.actual = nextToken
 
         elif variavel == "VERYTRUE":
@@ -179,8 +187,6 @@ class Tokenizer:
             self.actual = nextToken
 
         else:
-            if self.origin[self.position] =="(":
-                raise ValueError
             nextToken = Token("ID", variavel)
             self.actual = nextToken
 
@@ -215,24 +221,36 @@ class symbolTable:
         self.symbols = dict()       
 
     def getValue(self, variavel):
+        # print("variavel:",variavel,"table:",self.symbols)
+        return (self.symbols[variavel][0],self.symbols[variavel][1],self.symbols[variavel][2],)
+
+    def getFunc(self, funcName):
+        # print("getFunc",funcName,"////",TableFuncs.symbols)
         
-        return (self.symbols[variavel][0],self.symbols[variavel][1])
+        if funcName in TableFuncs.symbols:
+            return TableFuncs.symbols[funcName]
+        else:
+            raise ValueError("getFunc",funcName,"////",TableFuncs.symbols)
 
     def setValue(self, variable, newVariableValue):
-        # print("setValue",self.symbols[variable][0],newVariableValue[0])
+        # print("setvalue",variable,newVariableValue)
         if(self.symbols[variable][0]=="bool" and newVariableValue[0] == "int"):
             if newVariableValue[1] > 0:
                 self.symbols[variable][1] = 1
             elif newVariableValue[1]<=0:
                 self.symbols[variable][1] = 0
         else:
+
             self.symbols[variable][1] = newVariableValue[1]
         
-    def setType(self,  newVariableType, newVariable):
-        if(newVariable in self.symbols):
-            print("variavel ja adicionada, tentativa de instanciacao reptida")
-            raise ValueError
-        self.symbols[newVariable] = [newVariableType, None]
+    def setType(self,  newVariableType, newVariable, conteudo = None):
+        # print( newVariableType, newVariable)
+        if(newVariable != "return"):
+            if(newVariable in self.symbols):
+                print(self.symbols)
+                print("variavel ja adicionada, tentativa de instanciacao reptida")
+                raise ValueError
+        self.symbols[newVariable] = [newVariableType, None, conteudo]
 # ===============================================================================================
 
 class Parser:
@@ -249,9 +267,7 @@ class Parser:
             
             while(self.OBJETO.actual.tipo != "}"):
                 node = self.command()
-                nodeResult.children.append(node)
-                
-                
+                nodeResult.children.append(node)      
 
             if self.OBJETO.actual.tipo == "}":
                 self.OBJETO.selectNext()
@@ -262,25 +278,87 @@ class Parser:
             
             return nodeResult
 
-               
-      
+                     
+#---------------------------------------------------------------------------------
+    def FuncDefBlock(self):
+        code = treeNode()
+        while(self.OBJETO.actual.tipo == "INTV" or self.OBJETO.actual.tipo == "STRING" or self.OBJETO.actual.tipo == "BOOL"):
+        
+            funcType = self.OBJETO.actual.tipo
+            self.OBJETO.selectNext()
+            if self.OBJETO.actual.tipo == "ID":
+                funcName = self.OBJETO.actual.valor
+             
+                newFunc = funcDec(funcType,funcName)
+                args = treeNode()
+              
+                self.OBJETO.selectNext()
+                if self.OBJETO.actual.tipo == "(":
+                    self.OBJETO.selectNext()
+                  
+                    while( self.OBJETO.actual.tipo != ")"):
+                        if (self.OBJETO.actual.tipo == "INTV" or self.OBJETO.actual.tipo == "STRING" or self.OBJETO.actual.tipo == "BOOL"):
+                            variavelTipo = self.OBJETO.actual.tipo
+                            self.OBJETO.selectNext()
+                            if self.OBJETO.actual.tipo == "ID":
+                                variavelValor = self.OBJETO.actual.valor
+                         
+                                if variavelTipo == "INTV":
+                                    nodeAssign = UnOp("INTV")
+                                    
+                                elif variavelTipo == "BOOL":
+                                    nodeAssign = UnOp("BOOL")
+                                
+                                elif variavelTipo == "STRING":
+                                    nodeAssign = UnOp("STRING")
+                                else: 
+                                    raise ValueError 
+
+                                nodeAssign.children[0] = variavelValor  
+
+                                args.children.append(nodeAssign) 
+
+                                self.OBJETO.selectNext()
+                                if self.OBJETO.actual.tipo == ",":
+                                    self.OBJETO.selectNext()
+                                   
+                                    if (self.OBJETO.actual.tipo != "INTV" and self.OBJETO.actual.tipo != "STRING" and self.OBJETO.actual.tipo != "BOOL"):
+                                        raise ValueError
+                        else:
+                            raise ValueError
+                    if self.OBJETO.actual.tipo == ")":
+                        self.OBJETO.selectNext()
+                        newFunc.children[0] = args
+                        nodeLoop = self.command() 
+                        newFunc.children[1] = nodeLoop
+                       
+                    code.children.append(newFunc)
+   
+        code.children.append(funcCall("main"))
+        self.OBJETO.selectNext()
+        if self.OBJETO.actual.tipo != "EOF":
+            raise ValueError
+
+        return code
 #---------------------------------------------------------------------------------
 
     def command(self):
         
         if self.OBJETO.actual.tipo == "PRINT":
+            
             self.OBJETO.selectNext()
             
             if self.OBJETO.actual.tipo == "(":
                 
                 nodeCommand = self.orExpression()
-                
+                # print("command print")
                 prin = println()
+                
                 prin.children[0] = nodeCommand
                
                 if self.OBJETO.actual.tipo == ";":
                     self.OBJETO.selectNext()
-                    
+                    # print("command print2")
                     return prin
                 else:
                     print("DEBUGCommandPrintError: ",self.OBJETO.actual.tipo,self.OBJETO.actual.valor)
@@ -289,8 +367,9 @@ class Parser:
                 print("DEBUGCommandPrintError: ",self.OBJETO.actual.tipo,self.OBJETO.actual.valor)
                 raise ValueError
         
+        # VAR DECLARATION
         elif self.OBJETO.actual.tipo == "BOOL" or self.OBJETO.actual.tipo == "INTV" or self.OBJETO.actual.tipo == "STRING":
-            # variavel = self.OBJETO.actual.valor
+     
             tipo = self.OBJETO.actual.tipo
 
             if tipo == "INTV":
@@ -315,7 +394,6 @@ class Parser:
             if self.OBJETO.actual.tipo == "ID":
                 
                 variavel = self.OBJETO.actual.valor
-                # print("aaa",variavel)
                 nodeAssign.children[0] = variavel
                 self.OBJETO.selectNext()
                 
@@ -323,19 +401,34 @@ class Parser:
                     self.OBJETO.selectNext()
                     
                     return nodeAssign
+                else:
+                    raise ValueError
             else:
                 raise ValueError 
-            
             
             if self.OBJETO.actual.tipo == ";" :
                 self.OBJETO.selectNext()
                 
                 return nodeAssign
 
+        elif self.OBJETO.actual.tipo == "RETURN":
+          
+            self.OBJETO.selectNext()
+            nodeReturn= self.orExpression()
+            if self.OBJETO.actual.tipo == ";" :
+                self.OBJETO.selectNext()
+                node = returnOp(nodeReturn)
+                
+                return node
+            else:
+                print("ERRO RETURN")
+                raise ValueError 
+
         elif self.OBJETO.actual.tipo == "ID":
+            # print("DEBUG: ",self.OBJETO.actual.tipo,self.OBJETO.actual.valor)
             variavel = self.OBJETO.actual.valor
             self.OBJETO.selectNext()
-            
+           
             if self.OBJETO.actual.tipo == "=":
                 self.OBJETO.selectNext()
 
@@ -350,6 +443,31 @@ class Parser:
                     
                     return nodeAssign
                 
+                    
+            # FUNCTION CALL
+            
+            elif self.OBJETO.actual.tipo == "(":
+                self.OBJETO.selectNext()
+                
+                nodeFunctionCall = funcCall(variavel)
+             
+                while( self.OBJETO.actual.tipo != ")"):
+         
+                    funcArg = self.orExpression()
+               
+                    nodeFunctionCall.children.append(funcArg)
+                   
+                    if self.OBJETO.actual.tipo == ",":
+                        self.OBJETO.selectNext()
+
+                if self.OBJETO.actual.tipo == ")":
+                    self.OBJETO.selectNext()
+                    if self.OBJETO.actual.tipo == ";" :
+                        self.OBJETO.selectNext()
+                        return nodeFunctionCall
+                else:
+                    raise ValueError
+
 
         elif self.OBJETO.actual.tipo == "WHILE":
             self.OBJETO.selectNext()
@@ -362,6 +480,7 @@ class Parser:
                     self.OBJETO.selectNext()
 
                     whileCond = whileCondition()
+                    # print("criando no while")
                     whileCond.children[0] = nodeCommand
                 
                     nodeLoop = self.command()
@@ -372,10 +491,6 @@ class Parser:
 
                 else:
                     raise ValueError 
-
-
-
-
 
         elif self.OBJETO.actual.tipo == "IF":
             self.OBJETO.selectNext()
@@ -431,13 +546,10 @@ class Parser:
         if self.OBJETO.actual.tipo == "(":
             self.OBJETO.selectNext()
 
-          
-
             nodeFactor = self.orExpression()
             
             if self.OBJETO.actual.tipo == ")":
                 
-
                 self.OBJETO.selectNext()
                 
                 return nodeFactor
@@ -470,7 +582,7 @@ class Parser:
 
         elif(self.OBJETO.actual.tipo == "+"):
         
-            self.OBJETO.selectNext() 
+            self.OBJETO.selectNext()
 
             nodeFactor = UnOp("+")
             nodeFactor.children[0] = self.factor()
@@ -495,8 +607,32 @@ class Parser:
             self.OBJETO.selectNext()
             
         elif self.OBJETO.actual.tipo =="ID":  
+            variavel2 = self.OBJETO.actual.valor
+  
             nodeFactor = variableVal(self.OBJETO.actual.valor)
+            nameFunc = nodeFactor
             self.OBJETO.selectNext()
+
+            if self.OBJETO.actual.tipo == "(":
+                
+                self.OBJETO.selectNext()
+                nodeFactor = funcCall(variavel2)
+               
+                while( self.OBJETO.actual.tipo != ")"):
+                  
+                    funcArg = self.orExpression()
+                    nodeFactor.children.append(funcArg)
+                    
+                    if self.OBJETO.actual.tipo == ",":
+                        self.OBJETO.selectNext()
+                
+                if self.OBJETO.actual.tipo == ")":
+                    self.OBJETO.selectNext()
+                    
+                                            
+                else:
+                    print("factor parentesis error")
+                    raise ValueError
         
         return nodeFactor
     
@@ -566,7 +702,7 @@ class Parser:
         returnEq = self.RelExpression()
         
         while(self.OBJETO.actual.tipo =="=="):
-            # print("aaaaaaaaaaaaaaaaaaaaaaaaa")
+            
             self.OBJETO.selectNext()
             returnEqRel = self.RelExpression()
             nodeEq = BinOp("==")
@@ -649,12 +785,11 @@ class Parser:
         self.OBJETO = Tokenizer(code)
         self.OBJETO.selectNext()
         
-        outBlock = self.Block()
+        outFuncDefBlock = self.FuncDefBlock()
+  
+        output = outFuncDefBlock.Evaluate(TableFuncs)
         
-        output = outBlock.Evaluate()
-        
-        if(self.OBJETO.actual.tipo != "EOF"):
-            raise ValueError
+
             
 # ===============================================================================================
 # Referencias:
@@ -667,7 +802,7 @@ class node(ABC):
         super().__init__(value)
 
     @abstractmethod
-    def Evaluate(self):
+    def Evaluate(self,table):
         pass     
 
 # ===============================================================================================
@@ -677,19 +812,19 @@ class node(ABC):
 class BinOp(node):
     def __init__(self, value):
         self.value = value
-        # self.tipo = tipo
+      
         self.children = [None] * 2 
         
-    def Evaluate(self):
+    def Evaluate(self,table):
 
         if self.value =="=":     
             
-            return  Table.setValue(self.children[0],self.children[1].Evaluate())
+            return  table.setValue(self.children[0],self.children[1].Evaluate(table))
 
-    
-        x = self.children[0].Evaluate()
-        y = self.children[1].Evaluate()
-       
+        
+        x = self.children[0].Evaluate(table)
+        y = self.children[1].Evaluate(table)
+        
 
         if self.value == "+":
             return  ("int",x[1]+y[1])   
@@ -706,8 +841,7 @@ class BinOp(node):
         #  Booleanos
         # --------------------------
         elif self.value =="||":
-            # print(x)
-            # print(y)
+         
             if x[0]=="string" and y[0]=="string":
                 raise ValueError
             elif(x[0]=="int") or y[0]=="int":
@@ -719,10 +853,7 @@ class BinOp(node):
             return ("bool", x[1] or y[1])
         
         elif self.value =="&&":
-            # print(x[1])
-            # print(y[1])
-            # print("eu esto aqui",x[1] and y[1])
-            # if(x[0]=="int") and y[0]=="int":
+           
             if x[0]=="string" or y[0]=="string":
                 raise ValueError
 
@@ -768,29 +899,104 @@ class treeNode():
         
         self.children = [] 
         
-    def Evaluate(self):
+    def Evaluate(self,table):
+    
         for i in self.children:
-            i.Evaluate()
+            # print("treeNode pre return", i)
+            a=i.Evaluate(table)
+            
+            if (type(i)==returnOp) and type(i) !=funcCall:
+                
+                return a
+         
+# ===============================================================================================
+
+class returnOp():
+    def __init__(self,children):
+        self.children = children
+        
+    def Evaluate(self,table):
+       
+        resultado = self.children.Evaluate(table)
+        TableFuncs.setType(resultado[0],"return")
+        TableFuncs.setValue("return", resultado)
+     
+
+# ===============================================================================================
+
+class funcCall():
+    def __init__(self,name):
+        self.name = name
+      
+        self.children = []
+        
+    def Evaluate(self,table):
+        
+        funcTable = symbolTable()
+       
+        func = table.getFunc(self.name)
+        
+        func[2].children[0].Evaluate(funcTable)
+       
+        if(len(self.children) != len(func[2].children[0].children)):
+            raise ValueError
+
+        for i in range(len(self.children)):
+   
+            tipoVar = funcTable.getValue(func[2].children[0].children[i].children[0])[0]
+            tipoFuncVar=self.children[i].Evaluate(table)[0]
+            if (tipoVar != tipoFuncVar):
+                raise ValueError
+            
+            funcTable.setValue(func[2].children[0].children[i].children[0], self.children[i].Evaluate(table))
+        
+        a =func[2].children[1].Evaluate(funcTable)
+
+        if self.name != "main": 
+            retornoFunc = TableFuncs.getValue("return")
+            
+            if retornoFunc[0] != func[0]:
+                        
+                if retornoFunc[0] == "int" and  func[0] == "INTV":
+                    return retornoFunc
+                if retornoFunc[0] == "bool" and  func[0] == "BOOL":
+                    return retornoFunc
+                if retornoFunc[0] == "bool" and  func[0] == "INTV":
+                    return retornoFunc  
+                raise ValueError("error",retornoFunc[0],func[0])
+            
+            return retornoFunc
+# ===============================================================================================
+
+class funcDec():
+    def __init__(self,tipo,nome):
+        self.children = [None] * 2  
+        self.tipo = tipo
+        self.nome = nome
+        
+    def Evaluate(self,table):
+        # print("funcdec",self.children[1].children)
+        table.setType(self.tipo,self.nome, self)
 # ===============================================================================================
 class UnOp(node):
     def __init__(self, value):
         self.value = value
         self.children = [None]
 
-    def Evaluate(self):
+    def Evaluate(self,table):
         if self.value == "BOOL" or self.value == "INTV" or self.value == "STRING":
             # print("debug Set: ",self.children[0],self.children[1]) 
-            # tipo e variavel
             if(self.value =="BOOL"):
                 valor = "bool"
             elif(self.value =="STRING"):
                 valor = "string"
             else:
                 valor = "int"
-            return  Table.setType(valor,self.children[0])
 
-        x = self.children[0].Evaluate()
-        # print(x)
+            return  table.setType(valor,self.children[0])
+
+        x = self.children[0].Evaluate(table)
+
         if self.value == "+":
             return  ("int",+x[1])
 
@@ -810,11 +1016,14 @@ class println(node):
         
         self.children = [None]
 
-    def Evaluate(self):
-
-        x = self.children[0].Evaluate()
-
-        print(x[1])
+    def Evaluate(self,table):
+        
+        x = self.children[0].Evaluate(table)
+        
+        if(type(x[1])==tuple):
+            print(x[1][1])
+        else:
+            print(x[1])
 
 # ===============================================================================================
 
@@ -823,11 +1032,11 @@ class ifCondition(node):
         
         self.children = [None] * 3 
         
-    def Evaluate(self):
+    def Evaluate(self,table):
         
-        # print(self.children[0].Evaluate())
-        condition = self.children[0].Evaluate()[1]
-        # print(type(condition))
+        
+        condition = self.children[0].Evaluate(table)[1]
+        
         if type(condition)==str:
             raise ValueError
 
@@ -835,15 +1044,15 @@ class ifCondition(node):
             condition = True
 
         if  condition == True:
-            x = self.children[1].Evaluate()
-            return (self.children[0].Evaluate()[0],x)
+            x = self.children[1].Evaluate(table)
+            # print("ifcondition",self.children[0].Evaluate(table)[0],x)
+            return (self.children[0].Evaluate(table)[0],x)
 
         elif self.children[2] != None:
-            x = self.children[2].Evaluate()
-            return (self.children[0].Evaluate()[0],x)
+            x = self.children[2].Evaluate(table)
+            # print("ifcondition",self.children[0].Evaluate(table)[0],x)
+            return (self.children[0].Evaluate(table)[0],x)
 
-        # else:
-        #     raise ValueError 
             
 # ===============================================================================================
 
@@ -852,13 +1061,13 @@ class whileCondition(node):
         
         self.children = [None] * 2
         
-    def Evaluate(self):
-        # print(self.children[0].Evaluate())
-        while (self.children[0].Evaluate()[1] == True):
+    def Evaluate(self,table):
+       
+        while (self.children[0].Evaluate(table)[1] == True):
 
-            x = self.children[1].Evaluate()
-            # print(x)
-        return (self.children[0].Evaluate()[0],x)    
+            x = self.children[1].Evaluate(table)
+            # print("x", x)
+        return (self.children[0].Evaluate(table)[0],x)    
 
 # ===============================================================================================
 
@@ -866,8 +1075,8 @@ class IntVal(node):
     def __init__(self, value):
         self.value = value
 
-    def Evaluate(self):
-        # print("intintitnti")
+    def Evaluate(self,table):
+        
         return   ("int", self.value)
 # ===============================================================================================
 
@@ -875,8 +1084,8 @@ class StringVal(node):
     def __init__(self, value):
         self.value = value
 
-    def Evaluate(self):
-        # print(self.value)
+    def Evaluate(self,table):
+        
         return   ("string", self.value)
 
 # ===============================================================================================
@@ -885,8 +1094,8 @@ class BoolVal(node):
     def __init__(self, value):
         self.value = value
         
-    def Evaluate(self):
-    #    print("aaa ")
+    def Evaluate(self,table):
+   
         if self.value == "true":
             return  ("bool",1)
 
@@ -902,9 +1111,9 @@ class variableVal(node):
     def __init__(self, value):
         self.value = value
         
-    def Evaluate(self):
-        # print("GET",Table.getValue(self.value))
-        return Table.getValue(self.value)
+    def Evaluate(self,table):
+        
+        return table.getValue(self.value)
 
 # ===============================================================================================
 
@@ -912,7 +1121,7 @@ class inputEval(node):
     def __init__(self, value):
         self.value = value
         
-    def Evaluate(self):
+    def Evaluate(self,table):
 
         valor = input()
         
@@ -928,7 +1137,7 @@ class inputEval(node):
 class NoOp(node):
     def __init__(self):
         pass
-    def Evaluate(self):
+    def Evaluate(self,table):
         return 
 
 # ===============================================================================================
@@ -947,7 +1156,7 @@ class PrePro:
 
 if __name__ == '__main__':
     
-    Table = symbolTable()
+    TableFuncs = symbolTable()
     conta = Parser()
     with open(sys.argv[1], 'r') as leitura:
         test = leitura.read()

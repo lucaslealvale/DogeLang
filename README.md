@@ -3,10 +3,10 @@ Atividade Prática Supervisionada da matéria Lógica da Computação
 ![diagrama](/diagrams/dogeLogo.jpg)  
 
 ### História e motivação
-Uma foto de um cão da raça Shiba Inu viralizou em meados de 2013, devido à expressão na qual o animal fora fotografado, com as patas ligeiramente cruzadas e o mais importante um semblânte de desconfiança em sua face.  
-Essa postura somada à uma porção de palavras escritas em fonte comic sans com gráfia duvidosa (escrita informal da língua Inglesa), foi a receita de sucesso para o nascimento do maior meme de cachorro da história.  
-A partir dessa imagem muitas variações e montagens foram criadas e hoje existem acervos enormes na internet do doge. O meme ficou tão grande que ele se expandiu e criaram uma criptomoeda só dele a Dogecoin, moeda que explodiu em crescimento em 2021. Devido à popularidade do mesmo na internet e à grandes personalidades a impulsionando tal como Elon Musk.  
-Então como forma de agradecimento e de passar a palavra de Doge este projeto tomou forma, para quem conhece as falas atribuidas ao cachorro nas charge, algumas delas viraram a sintaxe desta linguagem de programação simples.  
+ Uma foto de um cão da raça Shiba Inu viralizou em meados de 2013, devido à expressão na qual o animal fora fotografado, com as patas ligeiramente cruzadas e o mais importante um semblânte de desconfiança em sua face.  
+ Essa postura somada à uma porção de palavras escritas em fonte comic sans com gráfia duvidosa (escrita informal da língua Inglesa), foi a receita de sucesso para o nascimento do maior meme de cachorro da história.  
+ A partir dessa imagem muitas variações e montagens foram criadas e hoje existem acervos enormes na internet do doge. O meme ficou tão grande que ele se expandiu e criaram uma criptomoeda só dele a Dogecoin, moeda que explodiu em crescimento em 2021. Devido à popularidade do mesmo na internet e à grandes personalidades a impulsionando tal como Elon Musk.  
+ Então como forma de agradecimento e de passar a palavra de Doge este projeto tomou forma, para quem conhece as falas atribuidas ao cachorro nas charge, algumas delas viraram a sintaxe desta linguagem de programação simples.  
 Abaixo segue a EBNF da linguagem a qual possui as falas.  
 
 EBNF para este projeto:  

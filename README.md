@@ -49,7 +49,7 @@ BOOL = (SUCHFALSE | VERYTRUE) ;
 STRING = " "" LETTER, { LETTER | DIGIT }," "" ;  
  
 ### Usando DogeLang  
-Para usar está linguagem é necessário executar o arquivo python do compilador junto com o programa que deseja rodar.  
+Para usar está linguagem é necessário executar o arquivo python do compilador (main.py) junto com o programa que deseja rodar.  
  #### Para compilar e rodar um programa em DogeLang:  
 
 > $ python3 main.py seuArquivo.c 

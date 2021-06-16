@@ -40,9 +40,11 @@ int main()
         wow(a);
         veryIf(a == 5){
             b = 0;
+            wow("long live DOGE");
+
         }suchElse veryIf(a==4)
         {
-            wow("funciona elif");
+            wow("Obrigado por usar DogeLang");
         }
     }
     veryIf(dont c){

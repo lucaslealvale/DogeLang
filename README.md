@@ -48,9 +48,14 @@ NOT =  "dont", "(", OREXPRESSION, ")" ;
 BOOL = (SUCHFALSE | VERYTRUE) ;  
 STRING = " "" LETTER, { LETTER | DIGIT }," "" ;  
  
+### Usando DogeLang  
+Para usar está linguagem é necessário executar o arquivo python do compilador junto com o programa que deseja rodar.  
+ #### Para compilar e rodar um programa em DogeLang:  
+<ol>
+<li>$ python3 main.py <nomeArquivo>.c</li>
+</ol>   
 
- #### para rodar com determinado arquivo de testes:  
-
+Este projeto possui um arquivo de exemplo que pode ser rodado com o seguinte commando no terminal, dado que este git fora clonado em algum diretório local:  
 <ol>
 <li>$ python3 main.py testes.c</li>
 </ol>  

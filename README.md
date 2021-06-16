@@ -18,7 +18,7 @@ Atividade Prática Supervisionada da matéria Lógica da Computação
  https://github.com/lucaslealvale/compilador  
    
 ### EBNF  
-
+```
 EBNF para este compilador:  
 FUNCDEFBLOCK = ( λ | {TYPEFunc});  
 TYPEFunc = ("BOOL" | "INTV" | "STRING"), "IDENTIFIER", "(" ,{"TYPE", "IDENTIFIER", { "," }, } ,")", "COMMAND" ;  
@@ -47,13 +47,13 @@ DIGIT = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
 NOT =  "dont", "(", OREXPRESSION, ")" ;  
 BOOL = (SUCHFALSE | VERYTRUE) ;  
 STRING = " "" LETTER, { LETTER | DIGIT }," "" ;  
- 
+```
 ### Usando DogeLang  
 Para usar está linguagem é necessário executar o arquivo python do compilador (main.py) junto com o programa que deseja rodar.  
  #### Para compilar e rodar um programa em DogeLang:  
-
-> $ python3 main.py seuArquivo.c 
-
+```
+$ python3 main.py seuArquivo.c 
+```
 
 Este projeto possui um arquivo de exemplo que pode ser rodado com o seguinte commando no terminal, dado que este git fora clonado em algum diretório local:  
 

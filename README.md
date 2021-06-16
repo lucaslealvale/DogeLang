@@ -38,13 +38,13 @@ EQEXPRESSION = RELEXPRESSION, { ("=="), RELEXPRESSION } ;
 RELEXPRESSION = EXPRESSION, { (">" | "<"), EXPRESSION } ;  
 EXPRESSION = TERM, { ("+" | "-"), TERM } ;  
 TERM = FACTOR, { ("*" | "/"), FACTOR } ;  
-FACTOR = (("+" | "-" | "!"), FACTOR) | NUMBER | "(", OREXPRESSION, ")" | IDENTIFIER_FUNC | READLN, "(", ")" ;  
+FACTOR = (("+" | "-" | "dont"), FACTOR) | NUMBER | "(", OREXPRESSION, ")" | IDENTIFIER_FUNC | READLN, "(", ")" ;  
 READLN = "listen";  
 IDENTIFIER = LETTER, { LETTER | DIGIT | "_" } ;  
 NUMBER = DIGIT, { DIGIT } ;  
 LETTER = ( a | ... | z | A | ... | Z ) ;  
 DIGIT = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;  
-NOT =  "dont", "(", OREXPRESSION, ")" ;  
+NOT("!") =  "dont";  
 BOOL = (SUCHFALSE | VERYTRUE) ;  
 STRING = " "" LETTER, { LETTER | DIGIT }," "" ;  
 ```

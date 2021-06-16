@@ -56,9 +56,9 @@ $ python3 main.py seuArquivo.c
 ```
 
 Este projeto possui um arquivo de exemplo que pode ser rodado com o seguinte commando no terminal, dado que este git fora clonado em algum diretório local:  
-
-> $ python3 main.py testes.c
-
+```
+ $ python3 main.py testes.c
+```
   
 ### Diagrama Sintático:  
   

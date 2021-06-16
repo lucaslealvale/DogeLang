@@ -51,14 +51,14 @@ STRING = " "" LETTER, { LETTER | DIGIT }," "" ;
 ### Usando DogeLang  
 Para usar está linguagem é necessário executar o arquivo python do compilador junto com o programa que deseja rodar.  
  #### Para compilar e rodar um programa em DogeLang:  
-<ol>
-<li>$ python3 main.py <nomeArquivo>.c</li>
-</ol>   
+
+> $ python3 main.py seuArquivo.c 
+
 
 Este projeto possui um arquivo de exemplo que pode ser rodado com o seguinte commando no terminal, dado que este git fora clonado em algum diretório local:  
-<ol>
-<li>$ python3 main.py testes.c</li>
-</ol>  
+
+> $ python3 main.py testes.c
+
   
 ### Diagrama Sintático:  
   
